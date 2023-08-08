@@ -1,0 +1,24 @@
+.page-heading h2 {
+  color: #333;
+  font-size: 36px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  text-transform: capitalize;
+}
+
+.page-heading button {
+  background-color: #333;
+  border: none;
+  width: 96px;
+  height: 40px;
+  border-radius: 1.5rem;
+  color: #FFF;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  text-transform: capitalize;
+}
+
+
