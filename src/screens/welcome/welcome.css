@@ -18,6 +18,10 @@
 .wlc_left_top{
 }
 
+.wlc_left_top span{
+    color: #A5A5A5;
+}
+
 .wlc_left_bottom{
     width: 70%;
     display: flex;
