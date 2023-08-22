@@ -1,12 +1,29 @@
-import React, { useContext, useEffect } from 'react';
-import { AppContext } from '../context/AppContext';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import Sidebar from '../components/sidebar/Sidebar';
+import React, { useContext, useEffect } from "react";
+import { AppContext } from "../context/AppContext";
+import { useLocation, useNavigate } from "react-router-dom";
+import Navbar from "../components/navbar/Navbar";
 
 const RestaurantRoute = ({ children }) => {
-  const { isLogin, user, loading } = useContext(AppContext);
+  const { user, loading } = useContext(AppContext);
   const navigate = useNavigate();
   const location = useLocation();
+
+  const navLinks = [
+    {
+      title: "Dashboard",
+      path: "/restaurant/dashboard",
+    },
+
+    {
+      title: "Menu",
+      path: "/restaurant/menu",
+    },
+
+    {
+      title: "Order",
+      path: "/restaurant/order",
+    },
+  ];
 
   if (loading) {
     return (
@@ -16,7 +33,7 @@ const RestaurantRoute = ({ children }) => {
       >
         <div
           className="spinner-border text-primary"
-          style={{ width: '3rem', height: '3rem' }}
+          style={{ width: "3rem", height: "3rem" }}
           role="status"
         >
           <span className="sr-only">Loading...</span>
@@ -25,45 +42,29 @@ const RestaurantRoute = ({ children }) => {
     );
   }
 
-  if (!user || !isLogin) {
-    navigate('/login', { state: { from: location.pathname } });
+
+
+  if (!user) {
+    navigate("/signin", { state: { from: location.pathname } });
     return null;
-  } else if (user && user.role !== 'restaurant_owner') {
-    navigate('/');
+  } else if (user && user.role !== "restaurant_owner") {
+    navigate("/");
     return null;
   }
-
-  return (
-    <>
-      <Sidebar
-        brandPath="/restaurant/dashboard"
-        menu={[
-          {
-            title: 'Dashboard',
-            path: '/restaurant/dashboard',
-            icon: 'bi bi-speedometer2',
-          },
-          {
-            title: 'Order',
-            path: '/restaurant/order',
-            icon: 'bi bi-table',
-          },
-          {
-            title: 'All Items',
-            path: '/restaurant/items',
-            icon: 'bi bi-grid-fill',
-          },
-
-          {
-            title: 'Add Items',
-            path: '/restaurant/add-items',
-            icon: 'bi bi-building-add',
-          },
-        ]}
-      />
-      {children}
-    </>
-  );
+ 
+    return (
+      <>
+        <Navbar type='restaurant' navLinks={navLinks} />
+        {children}
+        <footer
+          style={{ backgroundColor: "white", color: "gray" }}
+          className="text-center mt-5"
+        >
+          @ Circle allright reserve
+        </footer>
+      </>
+    );
+  
 };
 
 export default RestaurantRoute;

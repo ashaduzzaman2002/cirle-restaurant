@@ -1,303 +1,304 @@
-import React, { useState } from 'react';
-import './order.css';
-import RestaurantRoute from '../../../routes/RestaurantRoute';
+import React, { useState } from "react";
+import "./order.css";
+import RestaurantRoute from "../../../routes/RestaurantRoute";
+import ITEM from "../../../assets/img/order_image.png";
+import DP from "../../../assets/img/order-dp.svg";
+import AddFood from "../AddFood/AddFood";
+import {
+  Add,
+  AddDark,
+  Complete,
+  Delete,
+  Edit,
+  Filter,
+  FilterDark,
+} from "../../../assets/svg/SVG";
 
 const Order = () => {
-  const rawdata = [
+  const [showModal, setShowModal] = useState(false);
+
+  const Data = [
     {
-      Name: 'Tiger Nixon',
-      Position: 'System Architect',
-      Office: 'Edinburgh',
-      Age: 61,
-      Start: '2011/04/25',
-      Salary: '$320,800',
+      title: "Order(Today)",
+      amount: "100",
+      rate: "+11.01%",
     },
     {
-      Name: 'Garrett Winters',
-      Position: 'Accountant',
-      Office: 'Tokyo',
-      Age: 63,
-      Start: '2011/07/25',
-      Salary: '$170,750',
+      title: "Earning(Today)",
+      amount: "8000",
+      rate: "-0.03%",
     },
     {
-      Name: 'Ashton Cox',
-      Position: 'Junior Technical Author',
-      Office: 'San Francisco',
-      Age: 66,
-      Start: '2009/01/12',
-      Salary: '$86,000',
+      title: "Order(Monthly)",
+      amount: "40,000",
+      rate: "+15.03%",
     },
     {
-      Name: 'Cedric Kelly',
-      Position: 'Senior Javascript Developer',
-      Office: 'Edinburgh',
-      Age: 22,
-      Start: '2012/03/29',
-      Salary: '$433,060',
-    },
-    {
-      Name: 'Airi Satou',
-      Position: 'Accountant',
-      Office: 'Tokyo',
-      Age: 33,
-      Start: '2008/11/28',
-      Salary: '$162,700',
-    },
-    {
-      Name: 'Brielle Williamson',
-      Position: 'Integration Specialist',
-      Office: 'New York',
-      Age: 61,
-      Start: '2012/12/02',
-      Salary: '$372,000',
-    },
-    {
-      Name: 'Herrod Chandler',
-      Position: 'Sales Assistant',
-      Office: 'San Francisco',
-      Age: 59,
-      Start: '2012/08/06',
-      Salary: '$137,500',
-    },
-    {
-      Name: 'Rhona Davidson',
-      Position: 'Integration Specialist',
-      Office: 'Tokyo',
-      Age: 55,
-      Start: '2010/10/14',
-      Salary: '$327,900',
-    },
-    {
-      Name: 'Colleen Hurst',
-      Position: 'Javascript Developer',
-      Office: 'San Francisco',
-      Age: 39,
-      Start: '2009/09/15',
-      Salary: '$205,500',
-    },
-    {
-      Name: 'Sonya Frost',
-      Position: 'Software Engineer',
-      Office: 'Edinburgh',
-      Age: 23,
-      Start: '2008/12/13',
-      Salary: '$103,600',
-    },
-    {
-      Name: 'Jena Gaines',
-      Position: 'Office Manager',
-      Office: 'London',
-      Age: 30,
-      Start: '2008/12/19',
-      Salary: '$90,560',
-    },
-    {
-      Name: 'Quinn Flynn',
-      Position: 'Support Lead',
-      Office: 'Edinburgh',
-      Age: 22,
-      Start: '2013/03/03',
-      Salary: '$342,000',
-    },
-    {
-      Name: 'Charde Marshall',
-      Position: 'Regional Director',
-      Office: 'San Francisco',
-      Age: 36,
-      Start: '2008/10/16',
-      Salary: '$470,600',
-    },
-    {
-      Name: 'Haley Kennedy',
-      Position: 'Senior Marketing Designer',
-      Office: 'London',
-      Age: 43,
-      Start: '2012/12/18',
-      Salary: '$313,500',
-    },
-    {
-      Name: 'Tatyana Fitzpatrick',
-      Position: 'Regional Director',
-      Office: 'London',
-      Age: 19,
-      Start: '2010/03/17',
-      Salary: '$385,750',
-    },
-    {
-      Name: 'Michael Silva',
-      Position: 'Marketing Designer',
-      Office: 'London',
-      Age: 66,
-      Start: '2012/11/27',
-      Salary: '$198,500',
-    },
-    {
-      Name: 'Paul Byrd',
-      Position: 'Chief Financial Officer (CFO)',
-      Office: 'New York',
-      Age: 64,
-      Start: '2010/06/09',
-      Salary: '$725,000',
-    },
-    {
-      Name: 'Gloria Little',
-      Position: 'Systems Administrator',
-      Office: 'New York',
-      Age: 59,
-      Start: '2009/04/10',
-      Salary: '$237,500',
-    },
-    {
-      Name: 'Bradley Greer',
-      Position: 'Software Engineer',
-      Office: 'London',
-      Age: 41,
-      Start: '2012/10/13',
-      Salary: '$132,000',
-    },
-    {
-      Name: 'Dai Rios',
-      Position: 'Personnel Lead',
-      Office: 'Edinburgh',
-      Age: 35,
-      Start: '2012/09/26',
-      Salary: '$217,500',
-    },
-    {
-      Name: 'Jenette Caldwell',
-      Position: 'Development Lead',
-      Office: 'New York',
-      Age: 30,
-      Start: '2011/09/03',
-      Salary: '$345,000',
-    },
-    {
-      Name: 'Yuri Berry',
-      Position: 'Chief Marketing Officer (CMO)',
-      Office: 'New York',
-      Age: 40,
-      Start: '2009/06/25',
-      Salary: '$675,000',
-    },
-    {
-      Name: 'Caesar Vance',
-      Position: 'Pre-Sales Support',
-      Office: 'New York',
-      Age: 21,
-      Start: '2011/12/12',
-      Salary: '$106,450',
-    },
-    {
-      Name: 'Doris Wilder',
-      Position: 'Sales Assistant',
-      Office: 'Sidney',
-      Age: 23,
-      Start: '2010/09/20',
-      Salary: '$85,600',
-    },
-    {
-      Name: 'Angelica Ramos',
-      Position: 'Chief Executive Officer (CEO)',
-      Office: 'London',
-      Age: 47,
-      Start: '2009/10/09',
-      Salary: '$1,200,000',
+      title: "Order(Annual)",
+      amount: "215,000",
+      rate: "+6.08%",
     },
   ];
 
-  const [searchTerm, setSearchTerm] = useState('');
-  const [data, setData] = useState(rawdata);
+  const List = [
+    {
+      item_image: ITEM,
+      customer_image: DP,
+      customer: {
+        name: "aaa bbb",
+        image: DP,
+      },
+      title: "veg thali",
+      catagory: "launch",
+      type: "veg",
+      price: "199.00",
+    },
+    {
+      item_image: ITEM,
+      customer_image: DP,
+      customer: {
+        name: "aaa bbb",
+        image: DP,
+      },
+      title: "veg thali",
+      catagory: "launch",
+      type: "veg",
+      price: "199.00",
+    },
+    {
+      item_image: ITEM,
+      customer_image: DP,
+      customer: {
+        name: "aaa bbb",
+        image: DP,
+      },
+      title: "veg thali",
+      catagory: "launch",
+      type: "veg",
+      price: "199.00",
+    },
+    {
+      item_image: ITEM,
+      customer_image: DP,
+      customer: {
+        name: "aaa bbb",
+        image: DP,
+      },
+      title: "veg thali",
+      catagory: "launch",
+      type: "veg",
+      price: "199.00",
+    },
+  ];
 
-  const handleSearch = (event) => {
-    const value = event.target.value;
-    setSearchTerm(value);
+  // const [searchTerm, setSearchTerm] = useState('');
+  // const [data, setData] = useState(rawdata);
 
-    const results = rawdata.filter((employee) =>
-      employee.Name.toLowerCase().includes(value.toLowerCase())
-    );
+  // const handleSearch = (event) => {
+  //   const value = event.target.value;
+  //   setSearchTerm(value);
 
-    setData(results);
-  };
+  //   const results = rawdata.filter((employee) =>
+  //     employee.Name.toLowerCase().includes(value.toLowerCase())
+  //   );
+
+  //   setData(results);
+  // };
 
   return (
     <RestaurantRoute>
-      <div className="restaurant-dash">
+      <div className="dashboard_container container cm">
+        {showModal === true ? <AddFood setShowModal={setShowModal} /> : null}
 
-        <div className="container" style={{ paddingTop: '6rem' }}>
-          <div class="container-fluid">
-            <h1 class="h3 mb-2 text-gray-800">Tables</h1>
-            <p class="mb-4">
-              DataTables is a third party plugin that is used to generate the
-              demo table below. For more information about DataTables, please
-              visit the{' '}
-              <a target="_blank" href="https://datatables.net">
-                official DataTables documentation
-              </a>
-              .
-            </p>
+        <h4
+          className="dash-heading mb-0"
+          style={{ padding: "1rem 0rem", marginTop: ".8rem" }}
+        >
+          All Order
+        </h4>
 
-            <div class="card shadow mb-4">
-              <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">
-                  DataTables Example
-                </h6>
-              </div>
+        <p className="dash-desc">
+          Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+        </p>
 
-              <div class="row mt-3 mx-1">
-                
-                <div class="col-sm-12 col-md-6">
-                  <div id="dataTable_filter" class="dataTables_filter">
-                    <input
-                      type="search"
-                      value={searchTerm}
-                      onChange={handleSearch}
-                      class="form-control form-control-sm"
-                      placeholder="Search..."
-                      aria-controls="dataTable"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div class="card-body">
-                <div class="table-responsive">
-                  <table
-                    class="table table-bordered"
-                    id="dataTable"
-                    width="100%"
-                    cellspacing="0"
-                  >
-                    <thead>
-                      <tr>
-                        <th>Name</th>
-                        <th>Position</th>
-                        <th>Office</th>
-                        <th>Age</th>
-                        <th>Start Date</th>
-                        <th>Salary</th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      {data?.length
-                        ? data.map((item, i) => (
-                            <tr key={i}>
-                              <td>{item.Name}</td>
-                              <td>{item.Position}</td>
-                              <td>{item.Office}</td>
-                              <td>{item.Age}</td>
-                              <td>{item.Start}</td>
-                              <td>{item.Salary}</td>
-                            </tr>
-                          ))
-                        : 'No data found'}
-                    </tbody>
-                  </table>
-                </div>
-              </div>
-
-           
+        <div className="dashboard_container_order_report_container">
+          <div className="dashboard_container_order_report_nav ">
+            <div className="dashboard_container_order_report_nav_left d-flex justicy-content-center align-items-center">
+              <h6>Order report</h6>
             </div>
+
+            <div className="d-none d-md-flex">
+              <div className=" order_report_nav_right d-flex gap-2 justicy-content-center align-items-center ">
+                <div className="order_report_container_search  ">
+                  <input
+                    className="rounded-pill border border-white px-2 py-1 "
+                    style={{ background: "#F4F4F4" }}
+                    type="text"
+                    name="search"
+                    id="search"
+                    placeholder="Search"
+                  />
+                </div>
+                <div
+                  className="order_report_container_filter_order dashboard_container_btn d-flex justify-content-center align-items-center gap-2 h-75 "
+                  style={{ background: "#393C49" }}
+                >
+                  <Filter />
+                  <span>Filter Order</span>
+                </div>
+
+                <div
+                  className="order_report_container_search_add_order dashboard_container_btn d-flex justify-content-center align-items-center gap-2 h-75"
+                  style={{ background: "#FF5249" }}
+                  onClick={() => setShowModal(true)}
+                >
+                  <Add />
+                  <span>Add Order</span>
+                </div>
+              </div>
+            </div>
+
+            <div className=" d-flex justify-content-center align-items-center gap-4 d-md-none">
+              <div>
+                <FilterDark />
+              </div>
+              <div>
+                <AddDark />
+              </div>
+            </div>
+          </div>
+
+          <div className="table-responsive">
+            <table
+              class="table tbl "
+              style={{
+                padding: "2rem",
+                borderSpacing: "1rem 1rem",
+                width: "100%",
+              }}
+            >
+              <thead
+                class="table-light "
+                style={{
+                  background: "#ebebeb59",
+                  opacity: ".9",
+                  padding: "1rem 1rem",
+                  borderRadius: "2rem",
+                }}
+              >
+                <th style={{ paddingLeft: "1rem" }}>Image</th>
+                <th>Customer</th>
+                <th>Tittle</th>
+                <th>Category</th>
+                <th>Type</th>
+                <th>Price</th>
+                <th className=" text-center">Status</th>
+              </thead>
+              <tbody className="tbl">
+                {List.map((obj) => (
+                  <>
+                    <div className="mt-2"></div>
+                    <tr className="list_card">
+                      <td className="" style={{ width: "8%" }}>
+                        <img
+                          src={List.at(0).item_image}
+                          alt=""
+                          height={"45px"}
+                          width={"45px"}
+                        />
+                      </td>
+                      <td className="customer align-middle" style={{}}>
+                        <div class="d-flex align-items-center ">
+                          <img
+                            src={obj.customer.image}
+                            alt=""
+                            style={{ width: "30px", height: "30px" }}
+                            class="rounded-circle"
+                          />
+                          <div class="ms-3">
+                            <p class="fw-bold mb-1 ">{obj.customer.name}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className=" align-middle">{obj.title}</td>
+                      <td className=" align-middle">{obj.catagory}</td>
+                      <td className=" align-middle">{obj.type}</td>
+                      <td className=" align-middle">${obj.price}</td>
+                      <td className=" align-middle" style={{ width: "30%" }}>
+                        <div className=" d-flex gap-2 justify-content-evenly align-items-center m-0 p-0">
+                          <div
+                            className="dashboard_container_status_btn"
+                            style={{ background: "#E88B00" }}
+                          >
+                            <Edit />
+                            <span>Edit</span>
+                          </div>
+                          <div
+                            className="dashboard_container_status_btn"
+                            style={{ background: "#DC3545" }}
+                          >
+                            <Delete />
+                            <span>Delete</span>
+                          </div>
+                          <div
+                            className="dashboard_container_status_btn"
+                            style={{ background: "#198754" }}
+                          >
+                            <Complete />
+                            <span>Complete</span>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </>
+                ))}
+
+                <div className="mt-2 p-0 bg-danger "></div>
+                <tr className="list_card">
+                  <td colSpan={7}>
+                    <div className="  my-2 d-flex  justify-content-end align-items-center gap-1 ">
+                      <span>prev</span>
+                      <div
+                        className="border border-white text-white d-inline-block  "
+                        style={{
+                          padding: ".15rem .4rem",
+                          background: "#393C49",
+                          borderRadius: ".4rem",
+                          fontSize: "10px",
+                          textAlign: "center",
+                        }}
+                      >
+                        1
+                      </div>
+                      <div
+                        className="border border-white text-white d-inline-block  "
+                        style={{
+                          padding: ".15rem .4rem",
+                          background: "#393C49",
+                          borderRadius: ".4rem",
+                          fontSize: "10px",
+                          textAlign: "center",
+                        }}
+                      >
+                        1
+                      </div>
+                      <div
+                        className="border border-white text-white d-inline-block  "
+                        style={{
+                          padding: ".15rem .4rem",
+                          background: "#393C49",
+                          borderRadius: ".4rem",
+                          fontSize: "10px",
+                          textAlign: "center",
+                        }}
+                      >
+                        1
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>

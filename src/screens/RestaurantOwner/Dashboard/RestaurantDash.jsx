@@ -1,180 +1,380 @@
-import React, { useContext, useEffect, useState } from 'react';
-import './restaurantDash.css';
-import RestaurantRoute from '../../../routes/RestaurantRoute';
-import { AppContext } from '../../../context/AppContext';
-import { dbObject } from '../../../helper/api';
+import React, { useContext, useEffect, useState, useRef } from "react";
+import "./restaurantDash.css";
+import RestaurantRoute from "../../../routes/RestaurantRoute";
+import { AppContext } from "../../../context/AppContext";
+import { dbObject } from "../../../helper/api";
+import Layout from "../../../layout/Layout";
+import ITEM from "../../../assets/img/order_image.png";
+import DP from "../../../assets/img/order-dp.svg";
+import AddFood from "../AddFood/AddFood";
+
+// Import Swiper React components
+import { Swiper, SwiperSlide } from "swiper/react";
+
+// Import Swiper styles
+import "swiper/css";
+
+// import required modules
+import { Pagination } from "swiper/modules";
+import {
+  Add,
+  AddDark,
+  Complete,
+  Delete,
+  Edit,
+  Filter,
+  FilterDark,
+  Increase,
+} from "../../../assets/svg/SVG";
 
 const RestaurantDash = () => {
+  // const [data, setData] = useState([]);
+  // const { user } = useContext(AppContext);
+  const [showModal, setShowModal] = useState(false);
 
-  const [data, setData] = useState([]);
-  const { user } = useContext(AppContext);
+  // const getData = async () => {
+  //   try {
+  //     const { data } = await dbObject.get(
+  //       `/restaurants/restaurant/${user?.restaurant}/foods`
+  //     );
+  //     setData(data.foods);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+  // useEffect(() => {
+  //   getData();
+  // }, [user]);
 
-
-  const getData = async () => {
+  const getOrder = async () => {
     try {
-      const { data } = await dbObject.get(
-        `/restaurants/restaurant/${user?.restaurant}/foods`
-      );
-      setData(data.foods);
+      const {data} = await dbObject.get('/restaurants/all-orders')
+
+      console.log(data)
     } catch (error) {
-      console.log(error);
+      console.log(error)
     }
-  };
+  }
+
   useEffect(() => {
-    getData();
-  }, [user]);
+    getOrder()
+  }, [])
+
+  const Data = [
+    {
+      title: "Order(Today)",
+      amount: "100",
+      rate: "+11.01%",
+    },
+    {
+      title: "Earning(Today)",
+      amount: "8000",
+      rate: "-0.03%",
+    },
+    {
+      title: "Order(Monthly)",
+      amount: "40,000",
+      rate: "+15.03%",
+    },
+    {
+      title: "Order(Annual)",
+      amount: "215,000",
+      rate: "+6.08%",
+    },
+  ];
+
+  const List = [
+    {
+      item_image: ITEM,
+      customer_image: DP,
+      customer: {
+        name: "aaa bbb",
+        image: DP,
+      },
+      title: "veg thali",
+      catagory: "launch",
+      type: "veg",
+      price: "199.00",
+    },
+    {
+      item_image: ITEM,
+      customer_image: DP,
+      customer: {
+        name: "aaa bbb",
+        image: DP,
+      },
+      title: "veg thali",
+      catagory: "launch",
+      type: "veg",
+      price: "199.00",
+    },
+    {
+      item_image: ITEM,
+      customer_image: DP,
+      customer: {
+        name: "aaa bbb",
+        image: DP,
+      },
+      title: "veg thali",
+      catagory: "launch",
+      type: "veg",
+      price: "199.00",
+    },
+    {
+      item_image: ITEM,
+      customer_image: DP,
+      customer: {
+        name: "aaa bbb",
+        image: DP,
+      },
+      title: "veg thali",
+      catagory: "launch",
+      type: "veg",
+      price: "199.00",
+    },
+  ];
 
   return (
     <RestaurantRoute>
-      <div className="restaurant-dash">
-        <div className="container" style={{ paddingTop: '6rem' }}>
-          <div className="d-sm-flex align-items-center justify-content-between mb-4">
-            <h1 className="h3 mb-0 text-gray-800">Dashboard</h1>
-          </div>
-          <div className="row">
-            <Card
-              title={'Order (Today)'}
-              total={'100'}
-              icon={'fas fa-calendar fa-2x text-gray-300'}
-              classname="warning"
-            />
-            <Card
-              title={'Earnings (Today)'}
-              total={'8000'}
-              icon={'fas fa-dollar-sign fa-2x text-gray-300'}
-              classname="info"
-            />
-            <Card
-              title={'Earnings (Monthly)'}
-              total={'40,000'}
-              icon={'fas fa-calendar fa-2x text-gray-300'}
-              classname="primary"
-            />
-            <Card
-              title={'Earnings (Annual)'}
-              total={'215,000'}
-              icon={'fas fa-dollar-sign fa-2x text-gray-300'}
-              classname="success"
-            />
-          </div>
+      <div className="dashboard_container container cm">
+        <h6>Dashboard</h6>
+        {showModal === true ? <AddFood setShowModal={setShowModal} /> : null}
 
-          <div>
-            <h3 className="mt-4">Pending Order</h3>
-
-            <div class="card shadow mb-4">
-              <div class="card-header py-3">
-                <h6 class="m-0 font-weight-bold text-primary">
-                  Pernding orders
-                </h6>
+        <div className="dashboard_cards_lg d-md-flex d-none">
+          {Data.map(({ title, amount, rate }) => (
+            <div className="dashboard_card mobile">
+              <div>
+                <span>{title}</span>
               </div>
-
-              <div class="row mt-3 mx-1">
-                
-                <div class="col-sm-12 col-md-6">
-                  <div id="dataTable_filter" class="dataTables_filter">
-                    <input
-                      type="search"
-                     
-                      class="form-control form-control-sm"
-                      placeholder="Search..."
-                      aria-controls="dataTable"
-                    />
+              <div className="dashboard_card_bottom">
+                <h5>₹{amount}</h5>
+                <div className="dashboard_card_bottom_right">
+                  <span>{rate}</span>
+                  <div>
+                    <Increase />
                   </div>
-                </div>
-
-                <div class="col-sm-12 col-md-6">
-                  <div id="dataTable_filter" class="dataTables_filter">
-                    <button className='btn btn-primary'>Add Order</button>
-                  </div>
-                </div>
-              </div>
-              <div class="card-body">
-                <div class="table-responsive">
-                  <table
-                    class="table table-bordered"
-                    id="dataTable"
-                    width="100%"
-                    cellspacing="0"
-                  >
-                    <thead>
-                      <tr>
-                        <th>Image</th>
-                        <th>Title</th>
-                        <th>Category</th>
-                        <th>Type</th>
-                        <th>Price</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-
-                    <tbody>
-                      {data?.length
-                        ? data.map((item, i) => (
-                            <tr key={i}>
-                              <td style={{ width: 120 }}>
-                                <img
-                                  className="m-auto w-100"
-                                  src={item.img}
-                                  alt=""
-                                />
-                              </td>
-                              <td>{item?.name}</td>
-                              <td>{item.category}</td>
-                              <td>{item.type}</td>
-                              <td>₹ {item.price}</td>
-                              <td style={{maxWidth: '200px'}}>
-                                <div className="btn-group d-flex" style={{maxWidth: '200px'}}>
-                                  <button type="button" class="btn btn-warning d-flex align-items-center gap-1" style={{fontSize: 12}}>
-                                    <i class="bi bi-pencil-square"></i> Pending
-                                  </button>
-                                  <button type="button" class="btn btn-danger d-flex align-items-center gap-1" style={{fontSize: 12}}>
-                                    <i class="bi bi-trash3-fill"></i> Processing
-                                  </button>
-
-                                  <button type="button" class="btn btn-success d-flex align-items-center gap-1" style={{fontSize: 12}}>
-                                    <i class="bi bi-trash3-fill"></i> Complete
-                                  </button>
-                                </div>
-                              </td>
-                            </tr>
-                          ))
-                        : 'No data found'}
-                    </tbody>
-                  </table>
                 </div>
               </div>
             </div>
+          ))}
+        </div>
+        <div className="dashboard_cards_sm d-block d-md-none">
+          <Swiper
+            className="Cards"
+            slidesPerView={1}
+            spaceBetween={30}
+            pagination={{
+              clickable: true,
+            }}
+            modules={[Pagination]}
+            autoplay={{ delay: 100 }}
+          >
+            {Data.map(({ title, amount, rate }) => (
+              <SwiperSlide className="dashboard_card mobile">
+                <div>
+                  <span>{title}</span>
+                </div>
+                <div className="dashboard_card_bottom">
+                  <h5>₹{amount}</h5>
+                  <div className="dashboard_card_bottom_right">
+                    <span>{rate}</span>
+                    <div>
+                      <Increase />
+                    </div>
+                  </div>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+
+        <h6 className="" style={{ padding: "1rem 0rem", marginTop: ".8rem" }}>
+          Pending Order
+        </h6>
+
+        <div className="dashboard_container_order_report_container">
+          <div className="dashboard_container_order_report_nav ">
+            <div className="dashboard_container_order_report_nav_left d-flex justicy-content-center align-items-center">
+              <h6>Order report</h6>
+            </div>
+
+            <div className="d-none d-md-flex">
+              <div className=" order_report_nav_right d-flex gap-2 justicy-content-center align-items-center ">
+                <div className="order_report_container_search  ">
+                  <input
+                    className="rounded-pill border border-white px-2 py-1 "
+                    style={{ background: "#F4F4F4" }}
+                    type="text"
+                    name="search"
+                    id="search"
+                    placeholder="Search"
+                  />
+                </div>
+                <div
+                  className="order_report_container_filter_order dashboard_container_btn d-flex justify-content-center align-items-center gap-2 h-75 "
+                  style={{ background: "#393C49" }}
+                >
+                  <Filter />
+                  <span>Filter Order</span>
+                </div>
+
+                <div
+                  className="order_report_container_search_add_order dashboard_container_btn d-flex justify-content-center align-items-center gap-2 h-75"
+                  style={{ background: "#FF5249" }}
+                  onClick={() => setShowModal(true)}
+                >
+                  <Add />
+                  <span>Add Order</span>
+                </div>
+              </div>
+            </div>
+
+            <div className=" d-flex justify-content-center align-items-center gap-4 d-md-none">
+              <div>
+                <FilterDark />
+              </div>
+              <div>
+                <AddDark />
+              </div>
+            </div>
+          </div>
+
+          <div className="table-responsive">
+            <table
+              class="table tbl "
+              style={{
+                padding: "2rem",
+                borderSpacing: "1rem 1rem",
+                width: "100%",
+              }}
+            >
+              <thead
+                class="table-light "
+                style={{
+                  background: "#ebebeb59",
+                  opacity: ".9",
+                  padding: "1rem 1rem",
+                  borderRadius: "2rem",
+                }}
+              >
+                <th style={{ paddingLeft: "1rem" }}>Image</th>
+                <th>Customer</th>
+                <th>Tittle</th>
+                <th>Category</th>
+                <th>Type</th>
+                <th>Price</th>
+                <th className=" text-center">Status</th>
+              </thead>
+              <tbody className="tbl">
+                {List.map((obj) => (
+                  <>
+                    <div className="mt-2"></div>
+                    <tr className="list_card">
+                      <td className="" style={{ width: "8%" }}>
+                        <img
+                          src={List.at(0).item_image}
+                          alt=""
+                          height={"45px"}
+                          width={"45px"}
+                        />
+                      </td>
+                      <td className="customer align-middle" style={{}}>
+                        <div class="d-flex align-items-center ">
+                          <img
+                            src={obj.customer.image}
+                            alt=""
+                            style={{ width: "30px", height: "30px" }}
+                            class="rounded-circle"
+                          />
+                          <div class="ms-3">
+                            <p class="fw-bold mb-1 ">{obj.customer.name}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className=" align-middle">{obj.title}</td>
+                      <td className=" align-middle">{obj.catagory}</td>
+                      <td className=" align-middle">{obj.type}</td>
+                      <td className=" align-middle">${obj.price}</td>
+                      <td className=" align-middle" style={{ width: "30%" }}>
+                        <div className=" d-flex gap-2 justify-content-evenly align-items-center m-0 p-0">
+                          <div
+                            className="dashboard_container_status_btn"
+                            style={{ background: "#E88B00" }}
+                          >
+                            <Edit />
+                            <span>Edit</span>
+                          </div>
+                          <div
+                            className="dashboard_container_status_btn"
+                            style={{ background: "#DC3545" }}
+                          >
+                            <Delete />
+                            <span>Delete</span>
+                          </div>
+                          <div
+                            className="dashboard_container_status_btn"
+                            style={{ background: "#198754" }}
+                          >
+                            <Complete />
+                            <span>Complete</span>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </>
+                ))}
+
+                <div className="mt-2 p-0 bg-danger "></div>
+                <tr className="list_card">
+                  <td colSpan={7}>
+                    <div className="  my-2 d-flex  justify-content-end align-items-center gap-1 ">
+                      <span>prev</span>
+                      <div
+                        className="border border-white text-white d-inline-block  "
+                        style={{
+                          padding: ".15rem .4rem",
+                          background: "#393C49",
+                          borderRadius: ".4rem",
+                          fontSize: "10px",
+                          textAlign: "center",
+                        }}
+                      >
+                        1
+                      </div>
+                      <div
+                        className="border border-white text-white d-inline-block  "
+                        style={{
+                          padding: ".15rem .4rem",
+                          background: "#393C49",
+                          borderRadius: ".4rem",
+                          fontSize: "10px",
+                          textAlign: "center",
+                        }}
+                      >
+                        1
+                      </div>
+                      <div
+                        className="border border-white text-white d-inline-block  "
+                        style={{
+                          padding: ".15rem .4rem",
+                          background: "#393C49",
+                          borderRadius: ".4rem",
+                          fontSize: "10px",
+                          textAlign: "center",
+                        }}
+                      >
+                        1
+                      </div>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
     </RestaurantRoute>
   );
 };
-
-const Card = ({ title, total, icon, classname }) => (
-  <div className="col-xl-3 col-md-6 mb-4">
-    <div className={`card border-left-${classname} shadow h-100 py-"`}>
-      <div className="card-body">
-        <div className="row no-gutters align-items-center">
-          <div className="col mr-2">
-            <div
-              className={`text-xs font-weight-bold text-${classname} text-uppercase mb-1`}
-            >
-              {title}
-            </div>
-            <div className="h5 mb-0 font-weight-bold text-gray-800">
-              ${total}
-            </div>
-          </div>
-          <div className="col-auto">
-            <i className={icon}></i>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-);
-
-
 
 export default RestaurantDash;

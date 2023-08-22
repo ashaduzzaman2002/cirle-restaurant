@@ -1,8 +1,4 @@
-import {
-  Navigate,
-  Route,
-  Routes,
-} from "react-router-dom";
+import { Navigate, Route, Routes } from "react-router-dom";
 import Footer from "./components/footer/Footer";
 import Navbar from "./components/navbar/Navbar";
 import Home from "./screens/home/Home";
@@ -29,7 +25,9 @@ import PlaceOrder from "./screens/order/PlaceOrder";
 import Product from "./screens/product/Product";
 import AllProduct from "./screens/all-product/AllProduct";
 import AllRestaurant from "./screens/all-restaurant/AllRestaurant";
-import Signup from "./screens/auth/Signup";
+import Signin from "./screens/auth/Signin";
+import ConfirmOrder from "./screens/confirm-order/ConfirmOrder";
+import SingleItem from "./screens/single-item/SingleItem";
 
 function App() {
   return (
@@ -38,8 +36,13 @@ function App() {
         <Route path="/welcome" element={<Welcome />} />
         <Route path="/" element={<Home />} />
         <Route path="/item" element={<AllProduct />} />
+        <Route path="/item/:id" element={<SingleItem />} />
         <Route path="/restaurants" element={<AllRestaurant />} />
-        <Route path="/signup" element={<Signup />} />
+        <Route path="/signin" element={<Signin />} />
+        <Route path="/confirm-order" element={<PlaceOrder />} />
+        <Route path="/restaurant/menu" element={<AllFoods />} />
+        <Route path="/cart" element={<Cart />} />
+        <Route path="/menu" element={<Menu />} />
         <Route
           path="/search"
           element={
@@ -70,17 +73,6 @@ function App() {
         />
 
         <Route
-          path="/cart"
-          element={
-            <>
-              <Navbar />
-              <Cart />
-              <Footer />
-            </>
-          }
-        />
-
-        <Route
           path="/menu/item/:item_id"
           element={
             <>
@@ -90,7 +82,7 @@ function App() {
             </>
           }
         />
-       
+
         <Route
           path="/restaurant"
           element={<Navigate to={"/restaurant/dashboard"} />}
@@ -124,8 +116,6 @@ function App() {
 }
 
 const Layout = ({ children }) => {
-
-
   return (
     <>
       <Navbar />

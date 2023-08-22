@@ -10,10 +10,27 @@ const Layout = ({children}) => {
     window.scrollTo(0, 0);
   }, [location]);
 
+  const navLinks = [
+    {
+      title: "Home",
+      path: "/",
+    },
+
+    {
+      title: "Item",
+      path: "/item",
+    },
+
+    {
+      title: "Restaurants",
+      path: "/restaurants",
+    },
+  ];
+
 
   return (
-    <div>
-        <Navbar />
+    <div >
+        <Navbar type={'user'} navLinks={navLinks} />
         {children}
         <Footer />
     </div>

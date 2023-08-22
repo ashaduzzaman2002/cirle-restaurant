@@ -41,7 +41,7 @@ const PlaceOrder = () => {
             description: 'Test Transaction',
             image: 'https://example.com/your_logo',
             order_id: data.order.id,
-            callback_url: 'http://localhost:8000/payment/verification',
+            callback_url: `http://localhost:8000/payment/verification?name=ashadu&number=903480565`,
             prefill: {
               name: 'Gaurav Kumar',
               email: 'gaurav.kumar@example.com',

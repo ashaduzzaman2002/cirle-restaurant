@@ -1,19 +1,22 @@
-import React, { useContext } from 'react';
-import './cart.css';
-import { AppContext } from '../../context/AppContext';
-import { Link, useNavigate } from 'react-router-dom';
-import { dbObject } from '../../helper/api';
+import React, { useContext, useEffect } from "react";
+import "./cart.css";
+import { AppContext } from "../../context/AppContext";
+import { Link, useNavigate } from "react-router-dom";
+import { dbObject } from "../../helper/api";
+import Layout from "../../layout/Layout";
 
 const Cart = () => {
   const { cartItems, totalPrice } = useContext(AppContext);
+  useEffect(() => {
+    console.log(cartItems)
+  },)
 
-  const navigate = useNavigate()
-
-  
+  const navigate = useNavigate();
 
   return (
-    <div className="restaurant mt-5 pt-5">
-      <div className="container mt-md-5 p-3 cart-container">
+    <Layout title="Cart">
+      <div className="restaurant mt-5 pt-5">
+        <div className="container mt-md-5 p-3 cart-container">
         <div className="card">
           <div className="row">
             <div className="col-md-8 cart">
@@ -33,6 +36,7 @@ const Cart = () => {
                   cartItems?.map((item) => (
                     <CartItem key={item._id} data={item} />
                   ))
+                  // <h1>Hel</h1>
                 ) : (
                   <div className="container d-flex align-items-center justify-content-center mt-5">
                     <div className="row" style={{ width: '100%' }}>
@@ -93,7 +97,8 @@ const Cart = () => {
           </div>
         </div>
       </div>
-    </div>
+      </div>
+    </Layout>
   );
 };
 
@@ -104,12 +109,12 @@ const CartItem = ({ data }) => {
     <div className="border-bottom p-0">
       <div className="row main align-items-center">
         <div className="col-2">
-          <img className="img-fluid" src={data.img} />
+          <img className="img-fluid" src={data.image} />
         </div>
         <div className="col">
           <div className="row text-muted">
-            {data.name.slice(0, 18)}
-            {data?.name?.length >= 18 ? '...' : null}
+            {data.title.slice(0, 18)}
+            {data?.title?.length >= 18 ? "..." : null}
           </div>
         </div>
         <div className="col d-flex align-items-center justify-content-center gap-2">
@@ -120,7 +125,7 @@ const CartItem = ({ data }) => {
             -
           </button>
           <a
-            style={{ cursor: 'default', userSelect: 'none' }}
+            style={{ cursor: "default", userSelect: "none" }}
             className="border"
           >
             {data.quantity}

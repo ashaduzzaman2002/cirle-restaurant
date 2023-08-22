@@ -26,31 +26,41 @@ export const AppProvider = ({ children }) => {
     calculateTotalPrice()
   }, [cartItems]);
 
-  const addToCart = (item) => {
+  const addToCart = (item, quantity) => {
+    // return console.log(item, quantity)
+    // Retrieve existing cart items from localStorage or initialize an empty array
     const existingCartItems = JSON.parse(localStorage.getItem('cart')) || [];
+    
+    // Check if the item is already in the cart
     const existingItem = existingCartItems.find(
       (cartItem) => cartItem._id === item._id
     );
-
+  
     if (existingItem) {
-      // If the item already exists in the cart, increase the quantity
+      // If the item exists in the cart, update its quantity
       const updatedCartItems = existingCartItems.map((cartItem) => {
         if (cartItem._id === item._id) {
-          return { ...cartItem, quantity: cartItem.quantity + 1 };
+          return { ...cartItem, quantity: cartItem.quantity + quantity };
         }
         return cartItem;
       });
-
+  
+      // Update cart state and localStorage
       setCartItems(updatedCartItems);
       localStorage.setItem('cart', JSON.stringify(updatedCartItems));
     } else {
-      // If the item doesn't exist in the cart, add it with a quantity of 1
-      const updatedCartItems = [...existingCartItems, { ...item, quantity: 1 }];
-
+      // If the item is not in the cart, add it with the specified quantity
+      const updatedCartItems = [
+        ...existingCartItems,
+        { ...item, quantity: quantity }
+      ];
+  
+      // Update cart state and localStorage
       setCartItems(updatedCartItems);
       localStorage.setItem('cart', JSON.stringify(updatedCartItems));
     }
   };
+  
 
   const removeFromCart = (itemId) => {
     const updatedCart = cartItems.filter((item) => item._id !== itemId);
@@ -133,7 +143,6 @@ export const AppProvider = ({ children }) => {
       setLoading(true);
       const { data } = await dbObject.get('/auth/logout');
       console.log(data);
-      setIsLogin(false);
       setUser(null);
       setLoading(false);
     } catch (error) {
@@ -156,7 +165,7 @@ export const AppProvider = ({ children }) => {
     try {
       setLoading(true);
       const { data } = await dbObject.get('/auth/user');
-      setIsLogin(true);
+      // setIsLogin(true);
       setUser(data.user);
       setLoading(false);
     } catch (error) {
@@ -177,6 +186,7 @@ export const AppProvider = ({ children }) => {
   return (
     <AppContext.Provider
       value={{
+        getUser,
         cities,
         selectCity,
         city,

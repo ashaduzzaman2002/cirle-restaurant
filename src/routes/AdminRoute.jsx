@@ -1,12 +1,29 @@
-import React, { useContext, useEffect } from 'react';
-import { AppContext } from '../context/AppContext';
-import { Navigate, useLocation, useNavigate } from 'react-router-dom';
-import Sidebar from '../components/sidebar/Sidebar';
+import React, { useContext, useEffect } from "react";
+import { AppContext } from "../context/AppContext";
+import {  useLocation, useNavigate } from "react-router-dom";
+import Navbar from "../components/navbar/Navbar";
 
 const AdminRoute = ({ children }) => {
-  const { isLogin, user, loading } = useContext(AppContext);
+  const { user, loading } = useContext(AppContext);
   const navigate = useNavigate();
   const location = useLocation();
+
+  const navLinks = [
+    {
+      title: "Dashboard",
+      path: "/admin/dashboard",
+    },
+
+    {
+      title: "Restaurant",
+      path: "/restaurant/all",
+    },
+
+    {
+      title: "Resister Restaurant",
+      path: "/restaurant/resister",
+    },
+  ];
 
   if (loading) {
     return (
@@ -16,7 +33,7 @@ const AdminRoute = ({ children }) => {
       >
         <div
           className="spinner-border text-primary"
-          style={{ width: '3rem', height: '3rem' }}
+          style={{ width: "3rem", height: "3rem" }}
           role="status"
         >
           <span className="sr-only">Loading...</span>
@@ -25,37 +42,26 @@ const AdminRoute = ({ children }) => {
     );
   }
 
-  if (!user || !isLogin) {
-    navigate('/login', { state: { from: location.pathname } });
+  if (!user) {
+    navigate("/signin", { state: { from: location.pathname } });
     return null;
-  } else if (user && user.role !== 'admin') {
-    navigate('/');
+  } else if (user && user.role !== "admin") {
+    navigate("/");
     return null;
   }
 
   return (
     <>
-      <Sidebar
-        brandPath="/admin/dashboard"
-        menu={[
-          {
-            title: 'Dashboard',
-            path: '/admin/dashboard',
-            icon: 'bi bi-speedometer2',
-          },
-          {
-            title: 'All Restaurant',
-            path: '/admin/all-restaurant',
-            icon: 'bi bi-table',
-          },
-          {
-            title: 'Add Restaurant',
-            path: '/admin/add-restaurant',
-            icon: 'bi bi-building-add',
-          },
-        ]}
-      />
+      <Navbar type="restaurant" navLinks={navLinks} />
+
       {children}
+
+      <footer
+        style={{ backgroundColor: "white", color: "gray" }}
+        className="text-center mt-5"
+      >
+        @ Circle allright reserve
+      </footer>
     </>
   );
 };

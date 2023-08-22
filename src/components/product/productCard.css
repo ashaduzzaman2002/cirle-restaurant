@@ -113,6 +113,10 @@
     transition: all 0.3s ease;
 }
 
+.card-add-to-cart button:active {
+    opacity: 0.7;
+}
+
 .card-inc-dec {
     width: 98px;
     height: 39px;

@@ -1,5 +1,6 @@
 export const items = [
   {
+    _id: 1,
     image: "/images/item1.png",
     title: "La Pino’z Pizza",
     desc: "Italian, Pizzas, Fast Food, Mexican, Desserts, Beverages",
@@ -9,6 +10,7 @@ export const items = [
   },
 
   {
+    _id: 2,
     image: "/images/item2.jpg",
     title: "La Pino’z Pizza",
     desc: "Italian, Pizzas, Fast Food, Mexican, Desserts, Beverages",
