@@ -109,11 +109,11 @@ const CartItem = ({ data }) => {
     <div className="border-bottom p-0">
       <div className="row main align-items-center">
         <div className="col-2">
-          <img className="img-fluid" src={data.image} />
+          <img className="img-fluid" src={data.img} />
         </div>
         <div className="col">
           <div className="row text-muted">
-            {data.title.slice(0, 18)}
+            {data.name.slice(0, 18)}
             {data?.title?.length >= 18 ? "..." : null}
           </div>
         </div>

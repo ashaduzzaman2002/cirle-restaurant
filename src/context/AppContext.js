@@ -1,6 +1,6 @@
-import React, { createContext, useEffect, useReducer, useState } from 'react';
-import axios from 'axios';
-import { baseURL, dbObject } from '../helper/api';
+import React, { createContext, useEffect, useReducer, useState } from "react";
+import axios from "axios";
+import { baseURL, dbObject } from "../helper/api";
 
 export const AppContext = createContext();
 
@@ -12,30 +12,31 @@ export const AppProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [cartItems, setCartItems] = useState([]);
-  const [totalPrice, setTotalPrice] = useState(0.00);
+  const [totalPrice, setTotalPrice] = useState(0.0);
+  const [items, setItems] = useState([]);
 
   useEffect(() => {
-    const storedCart = localStorage.getItem('cart');
+    const storedCart = localStorage.getItem("cart");
     if (storedCart) {
       setCartItems(JSON.parse(storedCart));
     }
   }, []);
 
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cartItems));
-    calculateTotalPrice()
+    localStorage.setItem("cart", JSON.stringify(cartItems));
+    calculateTotalPrice();
   }, [cartItems]);
 
   const addToCart = (item, quantity) => {
     // return console.log(item, quantity)
     // Retrieve existing cart items from localStorage or initialize an empty array
-    const existingCartItems = JSON.parse(localStorage.getItem('cart')) || [];
-    
+    const existingCartItems = JSON.parse(localStorage.getItem("cart")) || [];
+
     // Check if the item is already in the cart
     const existingItem = existingCartItems.find(
       (cartItem) => cartItem._id === item._id
     );
-  
+
     if (existingItem) {
       // If the item exists in the cart, update its quantity
       const updatedCartItems = existingCartItems.map((cartItem) => {
@@ -44,28 +45,27 @@ export const AppProvider = ({ children }) => {
         }
         return cartItem;
       });
-  
+
       // Update cart state and localStorage
       setCartItems(updatedCartItems);
-      localStorage.setItem('cart', JSON.stringify(updatedCartItems));
+      localStorage.setItem("cart", JSON.stringify(updatedCartItems));
     } else {
       // If the item is not in the cart, add it with the specified quantity
       const updatedCartItems = [
         ...existingCartItems,
-        { ...item, quantity: quantity }
+        { ...item, quantity: quantity },
       ];
-  
+
       // Update cart state and localStorage
       setCartItems(updatedCartItems);
-      localStorage.setItem('cart', JSON.stringify(updatedCartItems));
+      localStorage.setItem("cart", JSON.stringify(updatedCartItems));
     }
   };
-  
 
   const removeFromCart = (itemId) => {
     const updatedCart = cartItems.filter((item) => item._id !== itemId);
     setCartItems(updatedCart);
-    localStorage.setItem('cart', JSON.stringify(updatedCart));
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
   };
 
   const clearCart = () => {
@@ -81,7 +81,7 @@ export const AppProvider = ({ children }) => {
     });
 
     setCartItems(updatedCartItems);
-    localStorage.setItem('cart', JSON.stringify(updatedCartItems));
+    localStorage.setItem("cart", JSON.stringify(updatedCartItems));
   };
 
   const decreaseQuantity = (itemId) => {
@@ -93,7 +93,7 @@ export const AppProvider = ({ children }) => {
     });
 
     setCartItems(updatedCartItems);
-    localStorage.setItem('cart', JSON.stringify(updatedCartItems));
+    localStorage.setItem("cart", JSON.stringify(updatedCartItems));
   };
 
   const getQuantity = (itemId) => {
@@ -103,11 +103,11 @@ export const AppProvider = ({ children }) => {
 
   const calculateTotalPrice = () => {
     let totalPrice = 0;
-    
+
     for (const item of cartItems) {
       totalPrice += item.price * item.quantity;
     }
-    
+
     setTotalPrice(totalPrice);
   };
 
@@ -127,21 +127,21 @@ export const AppProvider = ({ children }) => {
   const selectCity = (city) => {
     console.log(city);
     try {
-      localStorage.setItem('city', city);
+      localStorage.setItem("city", city);
     } catch (error) {
       console.log(error);
     }
   };
 
   const getCity = async () => {
-    const myCity = localStorage.getItem('city');
+    const myCity = localStorage.getItem("city");
     setCity(myCity);
   };
 
   const loggout = async () => {
     try {
       setLoading(true);
-      const { data } = await dbObject.get('/auth/logout');
+      const { data } = await dbObject.get("/auth/logout");
       console.log(data);
       setUser(null);
       setLoading(false);
@@ -150,24 +150,47 @@ export const AppProvider = ({ children }) => {
     }
   };
 
-  const getRestaurantOfCity = async (city) => {
+  // const getRestaurantOfCity = async (city) => {
+  //   try {
+  //     setLoading(true);
+  //     const { data } = await axios.get(`${baseURL}/restaurant/${city}/all`);
+  //     setRestaurants(data.restaurants);
+  //     setLoading(false);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  const getUser = async () => {
     try {
       setLoading(true);
-      const { data } = await axios.get(`${baseURL}/restaurant/${city}/all`);
-      setRestaurants(data.restaurants);
+      const { data } = await dbObject.get("/auth/user");
+      // setIsLogin(true);
+      setUser(data.user);
       setLoading(false);
     } catch (error) {
       console.log(error);
     }
   };
 
-  const getUser = async () => {
+  const getItems = async () => {
     try {
-      setLoading(true);
-      const { data } = await dbObject.get('/auth/user');
-      // setIsLogin(true);
-      setUser(data.user);
-      setLoading(false);
+      const { data } = await dbObject("/restaurants/get-all-item");
+      setItems(data.items);
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getRestaurant = async () => {
+    try {
+      const { data } = await dbObject("/restaurants/all-restaurant");
+
+      console.log(data);
+      if (data.success) {
+        setRestaurants(data?.restaurants);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -177,11 +200,9 @@ export const AppProvider = ({ children }) => {
     getCities();
     getCity();
     getUser();
+    getItems();
+    getRestaurant();
   }, [city]);
-
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
 
   return (
     <AppContext.Provider
@@ -196,7 +217,7 @@ export const AppProvider = ({ children }) => {
         setIsLogin,
         isLogin,
         loggout,
-        getRestaurantOfCity,
+        // getRestaurantOfCity,
         user,
         setUser,
         loading,
@@ -208,7 +229,8 @@ export const AppProvider = ({ children }) => {
         getQuantity,
         increaseQuantity,
         decreaseQuantity,
-        totalPrice
+        totalPrice,
+        items,
       }}
     >
       {children}

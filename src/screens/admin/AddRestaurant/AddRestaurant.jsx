@@ -145,7 +145,7 @@ const AddRestaurant = () => {
                     </div>
 
 
-                    <div className="col-12 mb-3">
+                    <div className="col-12 mb-5">
                       <div className="form-floating">
                         <input
                           onChange={handleChange}
@@ -159,7 +159,7 @@ const AddRestaurant = () => {
                       </div>
                     </div>
 
-                    <div className="col-12">
+                    <div className="col-12 mt-5">
                       <button
                         className="btn btn-primary w-100 py-3"
                         type="submit"

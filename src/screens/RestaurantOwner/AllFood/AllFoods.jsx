@@ -1,9 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
-import Sidebar from "../../../components/sidebar/Sidebar";
 import RestaurantRoute from "../../../routes/RestaurantRoute";
 import { dbObject } from "../../../helper/api";
 import { AppContext } from "../../../context/AppContext";
-import ITEM from "../../../assets/img/order_image.png";
 import AddFood from "../AddFood/AddFood";
 import {
   Add,

@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Layout from '../../layout/Layout'
 import ProductCard from '../../components/product/ProductCard'
+import { AppContext } from '../../context/AppContext'
 
 const AllProduct = () => {
+  const {items} = useContext(AppContext)
+
+  console.log(items)
   return (
     <Layout>
         <div className='container cm'>
@@ -11,14 +15,9 @@ const AllProduct = () => {
         </div>
 
         <div className='item-container'>
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
-          <ProductCard />
+        {items.map((item, i) => (
+            <ProductCard key={i} item={item} />
+          ))}
         </div>
       </div>
     </Layout>

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AppContext } from '../../context/AppContext';
-import { dbObject } from '../../helper/api';
+import { baseURL, dbObject } from '../../helper/api';
 import { useFormik } from 'formik';
 import { orderSchema } from '../../validation/fromValidation';
 
@@ -41,7 +41,7 @@ const PlaceOrder = () => {
             description: 'Test Transaction',
             image: 'https://example.com/your_logo',
             order_id: data.order.id,
-            callback_url: `http://localhost:8000/payment/verification?name=ashadu&number=903480565`,
+            callback_url: `${baseURL}/payment/verification?name=ashadu&number=903480565&cartitems=${JSON.stringify(cartItems)}`,
             prefill: {
               name: 'Gaurav Kumar',
               email: 'gaurav.kumar@example.com',

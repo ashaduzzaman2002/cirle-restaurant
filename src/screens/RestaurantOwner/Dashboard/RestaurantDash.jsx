@@ -2,11 +2,13 @@ import React, { useContext, useEffect, useState, useRef } from "react";
 import "./restaurantDash.css";
 import RestaurantRoute from "../../../routes/RestaurantRoute";
 import { AppContext } from "../../../context/AppContext";
-import { dbObject } from "../../../helper/api";
+import { baseURL, dbObject } from "../../../helper/api";
 import Layout from "../../../layout/Layout";
 import ITEM from "../../../assets/img/order_image.png";
 import DP from "../../../assets/img/order-dp.svg";
 import AddFood from "../AddFood/AddFood";
+import socketIOClient from "socket.io-client";
+
 
 // Import Swiper React components
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -31,6 +33,7 @@ const RestaurantDash = () => {
   // const [data, setData] = useState([]);
   // const { user } = useContext(AppContext);
   const [showModal, setShowModal] = useState(false);
+  const [orders, setOrders] = useState([]);
 
   // const getData = async () => {
   //   try {
@@ -50,11 +53,28 @@ const RestaurantDash = () => {
     try {
       const {data} = await dbObject.get('/restaurants/all-orders')
 
-      console.log(data)
+      setOrders(data.order);
     } catch (error) {
       console.log(error)
     }
   }
+
+  useEffect(() => {
+    // Connect to the Socket.io server
+    const socket = socketIOClient(baseURL); // Use the correct server URL
+
+    // Listen for new order events
+    socket.on("newOrder", (order) => {
+      // Update the orders state with the new order
+      setOrders((prevOrders) => [...prevOrders, order]);
+    });
+
+    // Clean up on component unmount
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
 
   useEffect(() => {
     getOrder()
@@ -266,6 +286,64 @@ const RestaurantDash = () => {
                 <th className=" text-center">Status</th>
               </thead>
               <tbody className="tbl">
+              {orders.map((obj) => (
+                  <>
+                    <div className="mt-2"></div>
+                    <tr className="list_card">
+                      <td className="" style={{ width: "8%" }}>
+                        <img
+                          src={obj?.item_image}
+                          alt=""
+                          height={"45px"}
+                          width={"45px"}
+                        />
+                      </td>
+                      <td className="customer align-middle" style={{}}>
+                        <div class="d-flex align-items-center ">
+                          <img
+                            src={obj?.image}
+                            alt=""
+                            style={{ width: "30px", height: "30px" }}
+                            class="rounded-circle"
+                          />
+                          <div class="ms-3">
+                            <p class="fw-bold mb-1 ">{obj?.customerName}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className=" align-middle">{obj.title}</td>
+                      <td className=" align-middle">{obj.catagory}</td>
+                      <td className=" align-middle">{obj.type}</td>
+                      <td className=" align-middle">${obj.price}</td>
+                      <td className=" align-middle" style={{ width: "30%" }}>
+                        <div className=" d-flex gap-2 justify-content-evenly align-items-center m-0 p-0">
+                          <div
+                            className="dashboard_container_status_btn"
+                            style={{ background: "#E88B00" }}
+                          >
+                            <Edit />
+                            <span>Edit</span>
+                          </div>
+                          <div
+                            className="dashboard_container_status_btn"
+                            style={{ background: "#DC3545" }}
+                          >
+                            <Delete />
+                            <span>Delete</span>
+                          </div>
+                          <div
+                            className="dashboard_container_status_btn"
+                            style={{ background: "#198754" }}
+                          >
+                            <Complete />
+                            <span>Complete</span>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  </>
+                ))}
+
                 {List.map((obj) => (
                   <>
                     <div className="mt-2"></div>

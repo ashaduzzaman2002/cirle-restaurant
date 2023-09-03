@@ -29,19 +29,19 @@ const ProductCard = ({ item }) => {
   return (
     <div className="card">
       <div className="image">
-        <img src={item.image} alt="item" />
+        <img src={item.img} alt="item" />
         <div className="time">
           <Clock />
-          <span>{item.time}</span>
+          <span>{item.time || 30}</span>
         </div>
       </div>
 
       <div className="card-text">
-        <h1>{item.title}</h1>
+        <h1>{item.name}</h1>
         <h4>{item.desc}</h4>
 
         <div className="d-flex gap-2 card-rating">
-          <p className="m-0">{item.rating}</p>
+          <p className="m-0">{3.5}</p>
           <div className="d-flex align-items-center gap-1">
             <Star />
             <Star />
@@ -51,7 +51,7 @@ const ProductCard = ({ item }) => {
           </div>
         </div>
 
-        <h3>₹250</h3>
+        <h3>₹{item.price}</h3>
 
         <div className="d-flex justify-content-between card-add-to-cart">
           <button
