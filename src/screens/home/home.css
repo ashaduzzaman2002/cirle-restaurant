@@ -7,7 +7,7 @@
   text-transform: capitalize;
 }
 
-.page-heading button {
+.page-heading button, .ss-btn {
   background-color: #333;
   border: none;
   width: 96px;
@@ -21,4 +21,46 @@
   text-transform: capitalize;
 }
 
+.ss-btn {
+  display: none;
+}
 
+
+
+@media screen and (max-width: 1400px) {
+  .page-heading h2 {
+    font-size: 30px;
+  }
+
+
+
+}
+
+@media screen and (max-width: 992px) {
+  .page-heading h2 {
+    font-size: 27px;
+  }
+
+  .page-heading button, .ss-btn {
+    width: 96px;
+    height: 38px;
+    font-size: 14px;
+    /* display: none; */
+  }
+}
+
+@media screen and (max-width: 669px) {
+  .page-heading h2 {
+    font-size: 20px;
+  }
+
+  .ls-btn {
+    display: none;
+  }
+
+  .ss-btn {
+    display: block;
+    font-size: 12px;
+    margin-top: 26px;
+  }
+}

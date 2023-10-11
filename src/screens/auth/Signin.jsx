@@ -83,7 +83,7 @@ const Signin = () => {
     }
   } else {
     return (
-      <Layout>
+      <Layout title={'Signin'}>
         <div className="signup_container">
           <Toastify />
           <div className="signup_left_logo"></div>
@@ -93,14 +93,14 @@ const Signin = () => {
             <input
               type="text"
               name="email"
-              placeholder="Enter Your Name"
+              placeholder="Enter Your Email"
               value={input.email}
               onChange={(e) => setInput({ ...input, email: e.target.value })}
             />
             <input
-              type="text"
+              type="password"
               name="password"
-              placeholder="Enter Mobile Number"
+              placeholder="Enter Password"
               value={input.password}
               onChange={(e) => setInput({ ...input, password: e.target.value })}
             />

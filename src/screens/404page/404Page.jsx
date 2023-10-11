@@ -8,7 +8,7 @@ const NotFoundPage = () => {
         <div class="row" style={{width: '100%'}}>
           <div class="col-lg-8 offset-lg-2 text-center">
             <div class="error-text">
-              <i class="far fa-sad-cry"></i>
+              <i class="bi bi-emoji-frown"></i>
               <h1>Oops! Not Found.</h1>
               <p>The page you requested for is not found.</p>
               <Link to="/" class="boxed-btn">

@@ -27,38 +27,86 @@ export const AppProvider = ({ children }) => {
     calculateTotalPrice();
   }, [cartItems]);
 
-  const addToCart = (item, quantity) => {
-    // return console.log(item, quantity)
+  // const addToCart = (item, quantity) => {
+  //   // return console.log(item, quantity)
+  //   // Retrieve existing cart items from localStorage or initialize an empty array
+  //   const existingCartItems = JSON.parse(localStorage.getItem("cart")) || [];
+
+  //   // Check if the item is already in the cart
+  //   const existingItem = existingCartItems.find(
+  //     (cartItem) => cartItem._id === item._id
+  //   );
+
+  //   if (existingItem) {
+  //     // If the item exists in the cart, update its quantity
+  //     const updatedCartItems = existingCartItems.map((cartItem) => {
+  //       if (cartItem._id === item._id) {
+  //         return { ...cartItem, quantity: cartItem.quantity + quantity };
+  //       }
+  //       return cartItem;
+  //     });
+
+  //     // Update cart state and localStorage
+  //     setCartItems(updatedCartItems);
+  //     localStorage.setItem("cart", JSON.stringify(updatedCartItems));
+  //   } else {
+  //     // If the item is not in the cart, add it with the specified quantity
+  //     const updatedCartItems = [
+  //       ...existingCartItems,
+  //       { ...item, quantity: quantity },
+  //     ];
+
+  //     // Update cart state and localStorage
+  //     setCartItems(updatedCartItems);
+  //     localStorage.setItem("cart", JSON.stringify(updatedCartItems));
+  //   }
+  // };
+
+  const addToCart = async (item, quantity) => {
     // Retrieve existing cart items from localStorage or initialize an empty array
     const existingCartItems = JSON.parse(localStorage.getItem("cart")) || [];
 
-    // Check if the item is already in the cart
-    const existingItem = existingCartItems.find(
-      (cartItem) => cartItem._id === item._id
-    );
+    if (
+      existingCartItems.length &&
+      existingCartItems[0]?.restaurant !== item.restaurant
+    ) {
+      await localStorage.removeItem("cart");
+      setCartItems([]);
 
-    if (existingItem) {
-      // If the item exists in the cart, update its quantity
-      const updatedCartItems = existingCartItems.map((cartItem) => {
-        if (cartItem._id === item._id) {
-          return { ...cartItem, quantity: cartItem.quantity + quantity };
-        }
-        return cartItem;
-      });
+      const updatedCartItems = [{ ...item, quantity: quantity }];
 
       // Update cart state and localStorage
       setCartItems(updatedCartItems);
       localStorage.setItem("cart", JSON.stringify(updatedCartItems));
     } else {
-      // If the item is not in the cart, add it with the specified quantity
-      const updatedCartItems = [
-        ...existingCartItems,
-        { ...item, quantity: quantity },
-      ];
+      // Check if the item is already in the cart
+      const existingItem = existingCartItems.find(
+        (cartItem) => cartItem._id === item._id
+      );
 
-      // Update cart state and localStorage
-      setCartItems(updatedCartItems);
-      localStorage.setItem("cart", JSON.stringify(updatedCartItems));
+      if (existingItem) {
+        // If the item exists in the cart, update its quantity
+        const updatedCartItems = existingCartItems.map((cartItem) => {
+          if (cartItem._id === item._id) {
+            return { ...cartItem, quantity: cartItem.quantity + quantity };
+          }
+          return cartItem;
+        });
+
+        // Update cart state and localStorage
+        setCartItems(updatedCartItems);
+        localStorage.setItem("cart", JSON.stringify(updatedCartItems));
+      } else {
+        // If the item is not in the cart, add it with the specified quantity
+        const updatedCartItems = [
+          ...existingCartItems,
+          { ...item, quantity: quantity },
+        ];
+
+        // Update cart state and localStorage
+        setCartItems(updatedCartItems);
+        localStorage.setItem("cart", JSON.stringify(updatedCartItems));
+      }
     }
   };
 
@@ -165,6 +213,7 @@ export const AppProvider = ({ children }) => {
     try {
       setLoading(true);
       const { data } = await dbObject.get("/auth/user");
+      console.log(data);
       // setIsLogin(true);
       setUser(data.user);
       setLoading(false);

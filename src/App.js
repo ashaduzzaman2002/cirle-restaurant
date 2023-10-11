@@ -28,6 +28,7 @@ import AllRestaurant from "./screens/all-restaurant/AllRestaurant";
 import Signin from "./screens/auth/Signin";
 import ConfirmOrder from "./screens/confirm-order/ConfirmOrder";
 import SingleItem from "./screens/single-item/SingleItem";
+import RestaurantPage from "./screens/restaurant-page/RestaurantPage";
 
 function App() {
   return (
@@ -44,6 +45,7 @@ function App() {
         <Route path="/cart" element={<Cart />} />
         <Route path="/menu" element={<Menu />} />
         <Route path='/restaurant/resister' element={<AddRestaurant />} />
+        <Route path="/restaurant/menu/:id" element={<RestaurantPage />} />
         <Route
           path="/search"
           element={
@@ -62,7 +64,7 @@ function App() {
             </>
           }
         />
-        <Route
+        {/* <Route
           path="/menu/restaurant/:restaurant"
           element={
             <>
@@ -71,7 +73,7 @@ function App() {
               <Footer />
             </>
           }
-        />
+        /> */}
 
         <Route
           path="/menu/item/:item_id"
